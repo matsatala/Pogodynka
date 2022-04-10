@@ -29,6 +29,7 @@ public class HTTPServiceDAO {
         entityManager.persist(weatherStack);
 
         entityManager.getTransaction().commit();
+        entityManager.close();
         HibernateUtil.shutdown();
 
         return new ArrayList<HTTPService>(List.of(openWeatherMap,accuWeather,weatherStack));
