@@ -12,24 +12,23 @@ public class WeatherForecast {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "weather_forecast_id", nullable = false)
     private Long weatherForecastId;
-    @Column(name = "temperature")
-    private int temperature;
+    @Column(name = "temp")
+    private float temp;
     @Column(name = "humidity")
-    private int humidity;
+    private float humidity;
     @Column(name = "atmospheric_pressure")
     private int pressure;
     @Column(name = "wind_speed")
-    private int windSpeed;
+    private float windSpeed;
     @Column(name = "wind_direction")
-    @Enumerated(EnumType.STRING)
-    private WindDirection windDirection;
+    private int windDirection;
     @Column(name = "date")
     private Date date;
 
     public WeatherForecast() {}
 
-    public WeatherForecast(int temperature, int humidity, int pressure, int windSpeed, WindDirection windDirection, Date date) {
-        this.temperature = temperature;
+    public WeatherForecast(float temperature, float humidity, int pressure, float windSpeed, int windDirection, Date date) {
+        this.temp = temperature;
         this.humidity = humidity;
         this.pressure = pressure;
         this.windSpeed = windSpeed;
@@ -37,19 +36,19 @@ public class WeatherForecast {
         this.date = date;
     }
 
-    public int getTemperature() {
-        return temperature;
+    public float getTemp() {
+        return temp;
     }
 
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
+    public void setTemp(float temp) {
+        this.temp = temp;
     }
 
-    public int getHumidity() {
+    public float getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(float humidity) {
         this.humidity = humidity;
     }
 
@@ -61,19 +60,19 @@ public class WeatherForecast {
         this.pressure = pressure;
     }
 
-    public int getWindSpeed() {
+    public float getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(int windSpeed) {
+    public void setWindSpeed(float windSpeed) {
         this.windSpeed = windSpeed;
     }
 
-    public WindDirection getWindDirection() {
+    public int getWindDirection() {
         return windDirection;
     }
 
-    public void setWindDirection(WindDirection windDirection) {
+    public void setWindDirection(int windDirection) {
         this.windDirection = windDirection;
     }
 
@@ -89,28 +88,25 @@ public class WeatherForecast {
         return weatherForecastId;
     }
 
-    public void setWeatherForecastId(Long weatherForecastId) {
-        this.weatherForecastId = weatherForecastId;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WeatherForecast that = (WeatherForecast) o;
-        return temperature == that.temperature && humidity == that.humidity && pressure == that.pressure && windSpeed == that.windSpeed && Objects.equals(weatherForecastId, that.weatherForecastId) && windDirection == that.windDirection && Objects.equals(date, that.date);
+        return temp == that.temp && humidity == that.humidity && pressure == that.pressure && windSpeed == that.windSpeed && Objects.equals(weatherForecastId, that.weatherForecastId) && windDirection == that.windDirection && Objects.equals(date, that.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(weatherForecastId, temperature, humidity, pressure, windSpeed, windDirection, date);
+        return Objects.hash(weatherForecastId, temp, humidity, pressure, windSpeed, windDirection, date);
     }
 
     @Override
     public String toString() {
         return "WeatherForecast{" +
                 "weatherForecastId=" + weatherForecastId +
-                ", temperature=" + temperature +
+                ", temperature=" + temp +
                 ", humidity=" + humidity +
                 ", pressure=" + pressure +
                 ", windSpeed=" + windSpeed +
