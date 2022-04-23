@@ -1,7 +1,7 @@
-package pogodynka.entity;
+package Pogodynka.entity;
 
 import org.hibernate.SessionFactory;
-import pogodynka.hibernate.HibernateUtil;
+import Pogodynka.hibernate.HibernateUtil;
 
 import javax.persistence.EntityManager;
 import java.net.http.HttpHeaders;
