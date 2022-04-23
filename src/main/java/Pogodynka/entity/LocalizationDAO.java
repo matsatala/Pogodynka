@@ -1,6 +1,6 @@
 package Pogodynka.entity;
 
-import pogodynka.hibernate.HibernateUtil;
+import Pogodynka.hibernate.HibernateUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -9,9 +9,10 @@ import java.util.Scanner;
 
 public class LocalizationDAO {
 
-    EntityManager entityManager = HibernateUtil.entityManager;
+
 
     public void addLocalization(Localization localization){
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
 
         entityManager.persist(localization);
@@ -21,6 +22,7 @@ public class LocalizationDAO {
     }
 
     public void displayAddedLocalizations(){
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
 
         Query query = entityManager.createQuery("from Localization", Localization.class);
@@ -33,6 +35,7 @@ public class LocalizationDAO {
     }
 
     public void getWeatherInfo(){
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
 
         Query query = entityManager.createQuery("from WeatherForecast", WeatherForecast.class);

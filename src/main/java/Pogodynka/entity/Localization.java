@@ -1,6 +1,7 @@
 package Pogodynka.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,8 +22,10 @@ public class Localization {
     private String regionName;
     @Column(name = "country_name", nullable = false)
     private String countryName;
-    @OneToOne(mappedBy = "localization", fetch = FetchType.EAGER)
-    private WeatherForecastAverage weatherForecastAverage;
+
+
+    @OneToMany(mappedBy = "localization")
+    private List<WeatherForecastAverage> weatherForecastAverage;
 
 
 

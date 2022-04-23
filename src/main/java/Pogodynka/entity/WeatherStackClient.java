@@ -23,12 +23,12 @@ public class WeatherStackClient implements WeatherClient{
 
     public WeatherForecast getWeatherForTommorow(String cityName) throws IOException, InterruptedException, URISyntaxException {
 
+        String str = "http://api.weatherstack.com/current" +
+                "?access_key=a93f0eb3d0d573b5c748509c81fef8bf" +
+                "&query=" + cityName;
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("http://api.weatherstack.com/forecast\n" +
-                        "?access_key=78ecbfcea890e12600f6a07f86da4196\n" +
-                        "&query="+ cityName +"\n" +
-                        "&forecast_days=1\n" +
-                        "&hourly=0"))
+                .uri(new URI(str))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         return objectMapper.readValue(response.body(), WeatherStackDTO.class).toDomain();

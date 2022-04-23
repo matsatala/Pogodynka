@@ -22,7 +22,7 @@ public class OpenWeatherMapClient implements WeatherClient{
     @Override
     public WeatherForecast getWeatherForTommorow(String cityName) throws IOException, InterruptedException, URISyntaxException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=11152b3e9411e308f0a32c582e1598ed"))
+                .uri(new URI("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=11152b3e9411e308f0a32c582e1598ed&units=metric"))
                 .build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         return objectMapper.readValue(response.body(), OpenWeatherMapDTO.class).toDomain();

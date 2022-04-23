@@ -10,10 +10,19 @@ import javax.persistence.EntityManager;
 
 public class HibernateUtil {
 
-    public static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    public static final EntityManager entityManager = sessionFactory.createEntityManager();
+//    public static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private static EntityManager entityManager;
+    private static SessionFactory sessionFactory;
 
-    private static final SessionFactory sf = buildSessionFactory();
+
+    public static EntityManager getEntityManager(){
+        if(sessionFactory == null){
+            sessionFactory = buildSessionFactory();
+        }
+        return sessionFactory.createEntityManager();
+    }
+
+
     private static SessionFactory buildSessionFactory() {
         try {
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
@@ -24,11 +33,15 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
-    public static SessionFactory getSessionFactory() {
-            return sf;
-        }
-        public static void shutdown() {
-            getSessionFactory().close();
+
+    public static void shutdown() {
+            sessionFactory.close();
         }
 
+    public static SessionFactory getSessionFactory() {
+        if(sessionFactory == null){
+            sessionFactory = buildSessionFactory();
+        }
+        return sessionFactory;
+    }
 }
