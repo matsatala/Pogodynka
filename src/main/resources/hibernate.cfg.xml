@@ -9,13 +9,15 @@
         <property name="connection.url">jdbc:mysql://localhost:3306/pogodynka?useSSL=false&amp;serverTimezone=CET</property>
         <property name="connection.username">root</property>
         <property name="connection.password">12345678</property>
-        <property name="connection.pool_size">1</property>
+        <property name="connection.pool_size">20</property>
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="current_session_context_class">thread</property>
         <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
         <property name ="hibernate.connection.autocommit">true</property>
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="hibernate.show_sql">true</property>
-        <mapping class="pogodynka.entity.HTTPService"/>
+        <mapping class="Pogodynka.entity.Localization"/>
+        <mapping class="Pogodynka.entity.WeatherForecastAverage"/>
+        <mapping class="Pogodynka.entity.WeatherForecast"/>
     </session-factory>
 </hibernate-configuration>

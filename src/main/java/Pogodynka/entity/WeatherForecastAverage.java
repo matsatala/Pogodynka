@@ -1,6 +1,8 @@
 package Pogodynka.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 
@@ -23,7 +25,8 @@ public class WeatherForecastAverage {
     private int windDirection;
     @Column(name = "date")
     private Date date;
-    @OneToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Localization_id")
     private Localization localization;
 
@@ -95,6 +98,19 @@ public class WeatherForecastAverage {
         return weatherForecastAverageId;
     }
 
+    @Override
+    public String toString() {
+        return "WeatherForecastAverage{" +
+                "weatherForecastAverageId=" + weatherForecastAverageId +
+                ", temp=" + temp +
+                ", humidity=" + humidity +
+                ", pressure=" + pressure +
+                ", windSpeed=" + windSpeed +
+                ", windDirection=" + windDirection +
+                ", date=" + date +
+                ", localization=" + localization +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

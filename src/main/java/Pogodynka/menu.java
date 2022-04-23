@@ -1,10 +1,13 @@
 package Pogodynka;
 
 import Pogodynka.entity.*;
+import Pogodynka.hibernate.HibernateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.*;
+import org.hibernate.SessionFactory;
 
 
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,16 +25,11 @@ public class menu {
         ObjectMapper objectMapper = new ObjectMapper();
         WeatherClient openWeatherMapClient = new OpenWeatherMapClient(objectMapper, httpClient);
         WeatherClient weatherStackClient = new WeatherStackClient(objectMapper,httpClient);
-
-        if(2==5){
-            openWeatherMapClient = new OpenWeatherMapClient(objectMapper, httpClient);
-        }else {
-            openWeatherMapClient = new WeatherStackClient(objectMapper, httpClient);
-        }
-
-
+        LocalizationClient localizationClient = new LocalizationClient(objectMapper, httpClient);
 
         LocalizationDAO localizationDAO = new LocalizationDAO();
+
+
         WeatherForecastAverageDAO weatherForecastAverageDAO = new WeatherForecastAverageDAO();
         boolean isWorking = true;
 
@@ -81,20 +79,12 @@ public class menu {
                 case "3":
                     System.out.println("Podaj miasto dla którego chcesz sparwdzić pogodę: ");
                     String userLocation = scanner.nextLine();
-                    // sprawdzić czy weatherForecastAverage zawiera daną lokalizację, jak nie to wysłać zapytanie do serwisów
-                    System.out.println("Chcesz zobaczyć pogodę na najbliższy dzień?: (tak/nie)");
-                    String userChoice = scanner.nextLine();
-                    if(userChoice.equals("tak")){
-                        if(weatherForecastAverageDAO.checkLocalization(userLocation)){
-                            // weatherForecastAverageDAO.getWeatherInfoForNextDay(userLocation)
-                        }else{
-                            // zapytania do 3 serwisów
-                            // zwrócenie pogody
-                        }
-                        // zwróc uśrednione wartości pogody z WeatherForecastAverageDAO
-                    }else{
-                        System.out.println("Podaj datę, dla której chcesz wyświetlić dane pogodowe: (rrrr-mm-dd)");
-                        String userDate = scanner.nextLine();
+                    if(weatherForecastAverageDAO.checkLocalization(userLocation)){
+                        System.out.println(weatherForecastAverageDAO.saveAverageWeatherForTommorow(userLocation));
+                    }
+                    else{
+                        localizationDAO.addLocalization(localizationClient.getLocalizationFromName(userLocation));
+                        System.out.println(weatherForecastAverageDAO.saveAverageWeatherForTommorow(userLocation));
                     }
                     // switch na date i miejsce lub samo miejsce lub if/else - czy chcesz wybrać pogode na jutro? jak nie to podaj datę
                     //
@@ -109,11 +99,7 @@ public class menu {
             }
         }
 
-        System.out.println(getWetherWithCityName("Warsaw"));
 
-        String result = getWetherWithCityName("Warsaw");
-
-        System.out.println(openWeatherMapClient.getWeatherForTommorow("Warsaw"));
     }
 
     public static String getWetherWithCityName(String cityName) throws IOException, InterruptedException, URISyntaxException {

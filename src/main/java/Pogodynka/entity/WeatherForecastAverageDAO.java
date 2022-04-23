@@ -1,6 +1,6 @@
 package Pogodynka.entity;
 
-import pogodynka.hibernate.HibernateUtil;
+import Pogodynka.hibernate.HibernateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.SessionFactory;
 
@@ -9,12 +9,13 @@ import javax.persistence.Query;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
+import java.util.Date;
 import java.util.List;
 
 public class WeatherForecastAverageDAO {
 
 
-    EntityManager entityManager = HibernateUtil.entityManager;
+
 
     HttpClient httpClient = HttpClient.newHttpClient();
     ObjectMapper objectMapper = new ObjectMapper();
@@ -22,9 +23,10 @@ public class WeatherForecastAverageDAO {
     WeatherClient weatherStackClient = new WeatherStackClient(objectMapper,httpClient);
 
     public boolean checkLocalization(String cityName){
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
 
-        List<Localization> locList = entityManager.createQuery("Select from Localization l where l.cityName = :cityName", Localization.class)
+        List<Localization> locList = entityManager.createQuery("from Localization l where l.cityName = :cityName", Localization.class)
                         .setParameter("cityName", cityName)
                                 .getResultList();
 
@@ -34,36 +36,48 @@ public class WeatherForecastAverageDAO {
         return locList.size() > 0;
     }
 
-    public void saveAverageWeatherForTommorow(String cityName) throws IOException, URISyntaxException, InterruptedException {
+    public WeatherForecastAverage saveAverageWeatherForTommorow(String cityName) throws IOException, URISyntaxException, InterruptedException {
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
         WeatherForecastAverage weatherForecastAverage = new WeatherForecastAverage();
 
         WeatherForecast weatherStackForecast = weatherStackClient.getWeatherForTommorow(cityName);
         WeatherForecast openWeatherForecast = openWeatherMapClient.getWeatherForTommorow(cityName);
-        // jeszcze z accu weather
 
-        weatherForecastAverage.setTemperature((weatherStackForecast.getTemp() + openWeatherForecast.getTemp()) /3);
-        weatherForecastAverage.setPressure((weatherStackForecast.getPressure() + openWeatherForecast.getPressure()) / 3);
-        weatherForecastAverage.setHumidity((weatherStackForecast.getHumidity() + openWeatherForecast.getHumidity()) / 3);
-        weatherForecastAverage.setWindDirection((weatherStackForecast.getWindDirection() + openWeatherForecast.getWindDirection()) / 3);
-        weatherForecastAverage.setWindSpeed((weatherStackForecast.getWindSpeed() + openWeatherForecast.getWindSpeed()) / 3);
+
+        weatherForecastAverage.setTemperature((weatherStackForecast.getTemp() + openWeatherForecast.getTemp()) /2);
+        weatherForecastAverage.setPressure((weatherStackForecast.getPressure() + openWeatherForecast.getPressure()) / 2);
+        weatherForecastAverage.setHumidity((weatherStackForecast.getHumidity() + openWeatherForecast.getHumidity()) / 2);
+        weatherForecastAverage.setWindDirection((weatherStackForecast.getWindDirection() + openWeatherForecast.getWindDirection()) / 2);
+        weatherForecastAverage.setWindSpeed((weatherStackForecast.getWindSpeed() + openWeatherForecast.getWindSpeed()) / 2);
+        weatherForecastAverage.setDate(new Date());
 
         entityManager.persist(weatherForecastAverage);
 
         entityManager.getTransaction().commit();
         entityManager.close();
+        // przerobić w wolnym czasie
+        // dodać lokalizację
+        return weatherForecastAverage;
     }
 
     public void getAverageWeatherForTommorow(String cityName){
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
 
-        // skad wiedzieć dla któego miasta zapisaliśmy averageWeather?
-        // relacja z localization 1 - 1 ?
+        WeatherForecastAverage weatherForecastAverage = entityManager.createQuery("select wfa from WeatherForecastAverage wfa "+
+                "join fetch wfa.localization " +
+                "where wfa.localization = :localization", WeatherForecastAverage.class)
+                .setParameter("localization", cityName)
+                .getSingleResult();
 
+        System.out.println(weatherForecastAverage);
 
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+
 
 
     // metoda do pobierania prognozy na jutro
