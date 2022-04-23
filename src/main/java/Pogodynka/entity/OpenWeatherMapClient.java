@@ -1,4 +1,4 @@
-package pogodynka.entity;
+package Pogodynka.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

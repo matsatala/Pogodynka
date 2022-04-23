@@ -1,4 +1,4 @@
-package pogodynka.hibernate;
+package Pogodynka.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

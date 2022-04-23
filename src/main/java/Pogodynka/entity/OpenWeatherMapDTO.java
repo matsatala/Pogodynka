@@ -1,4 +1,4 @@
-package pogodynka.entity;
+package Pogodynka.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;

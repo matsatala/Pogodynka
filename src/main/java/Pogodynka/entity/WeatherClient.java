@@ -1,4 +1,4 @@
-package pogodynka.entity;
+package Pogodynka.entity;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

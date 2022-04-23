@@ -1,4 +1,4 @@
-package pogodynka.entity;
+package Pogodynka.entity;
 
 import org.hibernate.SessionFactory;
 import pogodynka.hibernate.HibernateUtil;

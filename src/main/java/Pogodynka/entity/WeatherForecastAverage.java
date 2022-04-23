@@ -1,4 +1,4 @@
-package pogodynka.entity;
+package Pogodynka.entity;
 
 import javax.persistence.*;
 import java.util.Date;
