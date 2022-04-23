@@ -1,6 +1,6 @@
-package Pogodynka.entity;
+package pogodynka.entity;
 
-import Pogodynka.hibernate.HibernateUtil;
+import pogodynka.hibernate.HibernateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.SessionFactory;
 

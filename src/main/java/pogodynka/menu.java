@@ -1,6 +1,6 @@
-package Pogodynka;
+package pogodynka;
 
-import Pogodynka.entity.*;
+import pogodynka.entity.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.*;
 

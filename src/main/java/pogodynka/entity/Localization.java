@@ -1,4 +1,4 @@
-package Pogodynka.entity;
+package pogodynka.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -14,18 +14,21 @@ public class Localization {
     @Column(name = "city_name", nullable = false)
     private String cityName;
     @Column(name = "longitude")
-    private String longitude; // -90 -> S   90 -> N
+    private float longitude; // -90 -> S   90 -> N
     @Column(name = "latitude")
-    private String latitude;
+    private float latitude;
     @Column(name = "region_name")
     private String regionName;
     @Column(name = "country_name", nullable = false)
     private String countryName;
+    @OneToOne(mappedBy = "localization", fetch = FetchType.EAGER)
+    private WeatherForecastAverage weatherForecastAverage;
+
 
 
     public Localization(){}
 
-    public Localization( String cityName, String longitude, String latitude, String regionName, String countryName) {
+    public Localization( String cityName, float longitude, float latitude, String regionName, String countryName) {
         this.cityName = cityName;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -41,19 +44,19 @@ public class Localization {
         this.cityName = cityName;
     }
 
-    public String getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(int longitude) {
         this.longitude = longitude;
     }
 
-    public String getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(int latitude) {
         this.latitude = latitude;
     }
 
@@ -77,9 +80,6 @@ public class Localization {
         return localizationId;
     }
 
-    public void setLocalizationId(Long id) {
-        this.localizationId = id;
-    }
 
     @Override
     public boolean equals(Object o) {

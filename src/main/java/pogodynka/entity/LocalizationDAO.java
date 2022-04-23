@@ -1,7 +1,6 @@
-package Pogodynka.entity;
+package pogodynka.entity;
 
-import Pogodynka.hibernate.HibernateUtil;
-import org.hibernate.SessionFactory;
+import pogodynka.hibernate.HibernateUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -10,25 +9,9 @@ import java.util.Scanner;
 
 public class LocalizationDAO {
 
-    static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    static final EntityManager entityManager = sessionFactory.createEntityManager();
+    EntityManager entityManager = HibernateUtil.entityManager;
 
-    public static void generateLocalization(){
-        Scanner scanner = new Scanner(System.in);
-        Localization localization = new Localization();
-        System.out.println("Please type in name of the City: ");
-        localization.setCityName(scanner.nextLine());
-        System.out.println("Please type in country name: ");
-        localization.setCountryName(scanner.nextLine());
-        System.out.println("Please type in region: (optional)");
-        localization.setRegionName(scanner.nextLine());
-        System.out.println("Please type in longitude: (optional)");
-        localization.setLongitude(scanner.nextLine());
-        System.out.println("Please type in latitude: (optional)");
-        localization.setLatitude(scanner.nextLine());
-    }
-
-    public static void addLocalization(Localization localization){
+    public void addLocalization(Localization localization){
         entityManager.getTransaction().begin();
 
         entityManager.persist(localization);
@@ -37,7 +20,7 @@ public class LocalizationDAO {
         entityManager.close();
     }
 
-    public static void displayAddedLocalizations(){
+    public void displayAddedLocalizations(){
         entityManager.getTransaction().begin();
 
         Query query = entityManager.createQuery("from Localization", Localization.class);
@@ -49,7 +32,7 @@ public class LocalizationDAO {
         entityManager.close();
     }
 
-    public static void getWeatherInfo(){
+    public void getWeatherInfo(){
         entityManager.getTransaction().begin();
 
         Query query = entityManager.createQuery("from WeatherForecast", WeatherForecast.class);
